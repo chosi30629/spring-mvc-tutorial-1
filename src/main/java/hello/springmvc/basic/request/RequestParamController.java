@@ -1,12 +1,15 @@
 package hello.springmvc.basic.request;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,4 +25,60 @@ public class RequestParamController {
 		
 		response.getWriter().write("ok");
 	}
+	
+	@ResponseBody
+	@RequestMapping("/request-param-v2")
+	public String requestParamV2(
+			@RequestParam("username") String memberName,
+			@RequestParam("age") int memberAge) {
+		
+		log.info("username={}, age={}", memberName, memberAge);
+		return "ok";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/request-param-v3")
+	public String requestParamV3(
+			@RequestParam String username,
+			@RequestParam int age) {
+		
+		log.info("username={}, age={}", username, age);
+		return "ok";
+	}
+
+	@ResponseBody
+	@RequestMapping("/request-param-v4")
+	public String requestParamV4(String username, int age) {	// 해당 파라미터 필수 아님
+		log.info("username={}, age={}", username, age);
+		return "ok";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/request-param-required")
+	public String requestParamRequired(
+			@RequestParam(required = true) String username,		// ?username= 시 빈문자가 들어옴
+			@RequestParam(required = false) Integer age) {		// int 설정 시 null 이 들어오면 500 에러
+		
+		log.info("username={}, age={}", username, age);
+		return "ok";
+	}
+
+	@ResponseBody
+	@RequestMapping("/request-param-default")
+	public String requestParamDefualt(
+			@RequestParam(required = true, defaultValue = "guest") String username,	// 빈문자여도 defaultValue 를 사용
+			@RequestParam(required = false, defaultValue = "-1") Integer age) {
+		
+		log.info("username={}, age={}", username, age);
+		return "ok";
+	}
+
+	@ResponseBody
+	@RequestMapping("/request-param-map")
+	public String requestParamMap(@RequestParam Map<String, Object> paramMap) {
+		
+		log.info("username={}, age={}", paramMap.get("username"), paramMap.get("age"));
+		return "ok";
+	}
+	
 }
