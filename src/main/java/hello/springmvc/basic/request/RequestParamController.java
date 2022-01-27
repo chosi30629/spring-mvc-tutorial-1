@@ -19,6 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class RequestParamController {
 	
+	/*
+	 * 메시지 바디가 아닌 Get 에 쿼리스트링, HTML Form 전송 방식일때만 @RequestParam, @ModelAttribute 를 사용한다.
+	 */
+	
 	@RequestMapping("/request-param-v1")
 	public void requestParamV1(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String username = request.getParameter("username");
